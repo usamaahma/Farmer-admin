@@ -1,0 +1,42 @@
+.farmers-table-container {
+    padding: 20px;
+}
+
+.farmers-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.farmers-table th,
+.farmers-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.farmers-table th {
+    background-color: #f4f4f4;
+}
+
+.farmers-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.farmers-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.delete-btn {
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c62828;
+}
