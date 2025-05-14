@@ -18,6 +18,9 @@ const event = axios.create({
 const contact = axios.create({
   baseURL: `${baseURL}/contact`,
 });
+const orders = axios.create({
+  baseURL: `${baseURL}/checkout`,
+});
 const requestInterceptor = (req) => {
   return req;
 };
@@ -28,8 +31,8 @@ const errorInterceptor = (err) => {
 };
 
 // Apply interceptors
-[users, crop, auth, event, contact].forEach((instance) => {
+[users, crop, auth, event, contact, orders].forEach((instance) => {
   instance.interceptors.request.use(requestInterceptor, errorInterceptor);
 });
 
-export { users, auth, crop, event, contact };
+export { users, auth, crop, event, contact, orders };

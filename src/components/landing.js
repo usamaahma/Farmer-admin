@@ -3,7 +3,8 @@ import "./landing.css";
 import Farmers from "./farmers";
 import Crops from "./crops";
 import Events from "./events";
-import { users, crop, event } from "../utils/axios";
+import { users, crop, event, orders } from "../utils/axios";
+import Orders from "./orders";
 
 const AdminPortal = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -12,6 +13,7 @@ const AdminPortal = () => {
     totalFarmers: 0,
     activeProducts: 0,
     upcomingEvents: 0,
+    pendingOrders: 0,
   });
 
   const navItems = [
@@ -25,16 +27,23 @@ const AdminPortal = () => {
   // Fetch data for dashboard
   const fetchDashboardData = async () => {
     try {
-      const farmersRes = await users.get("/"); // Fetch total farmers
-      const productsRes = await crop.get("/"); // Fetch active products
-      const eventsRes = await event.get("/"); // Fetch upcoming events
+      const farmersRes = await users.get("/");
+      const productsRes = await crop.get("/");
+      const eventsRes = await event.get("/");
+      const ordersRes = await orders.get("/");
+
       const totalFarmers = farmersRes.data.results.filter(
         (farmer) => farmer.role === "farmer"
       ).length;
+
+      // Simply get the total count of orders
+      const totalOrders = ordersRes.data.length;
+
       setDashboardData({
         totalFarmers: totalFarmers,
         activeProducts: productsRes.data.results.length,
         upcomingEvents: eventsRes.data.results.length,
+        totalOrders: totalOrders, // Store the total number of orders
       });
     } catch (error) {
       console.error("Failed to fetch dashboard data:", error);
@@ -61,8 +70,8 @@ const AdminPortal = () => {
                 <p>{dashboardData.activeProducts}</p>
               </div>
               <div className="stat-card">
-                <h3>Pending Orders</h3>
-                <p>42</p> {/* Placeholder for orders */}
+                <h3>Total Orders</h3>
+                <p>{dashboardData.totalOrders}</p>
               </div>
               <div className="stat-card">
                 <h3>Upcoming Events</h3>
@@ -96,7 +105,7 @@ const AdminPortal = () => {
         return (
           <div className="tab-content">
             <h2>Order Management</h2>
-            <p>Recent orders from customers</p>
+            <Orders />
           </div>
         );
       default:
@@ -106,9 +115,8 @@ const AdminPortal = () => {
 
   return (
     <div
-      className={`admin-portal ${
-        sidebarOpen ? "sidebar-open" : "sidebar-collapsed"
-      }`}
+      className={`admin-portal ${sidebarOpen ? "sidebar-open" : "sidebar-collapsed"
+        }`}
     >
       {/* Sidebar */}
       <div className="sidebar">

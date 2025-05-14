@@ -1,0 +1,52 @@
+.orders-container {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.orders-container h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: left;
+    color: #222;
+}
+
+.orders-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    text-align: left;
+
+}
+
+.order-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 5px solid #4caf50;
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.order-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.order-card p {
+    font-size: 15px;
+    margin: 4px 0;
+    color: #555;
+}
+
+.order-card p span {
+    font-weight: bold;
+    color: #222;
+}
