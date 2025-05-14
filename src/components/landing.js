@@ -3,7 +3,7 @@ import "./landing.css";
 import Farmers from "./farmers";
 import Crops from "./crops";
 import Events from "./events";
-import { users, crop, event } from "../utils/axios"; // Assuming these are the APIs
+import { users, crop, event } from "../utils/axios";
 
 const AdminPortal = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -106,7 +106,9 @@ const AdminPortal = () => {
 
   return (
     <div
-      className={`admin-portal ${sidebarOpen ? "sidebar-open" : "sidebar-collapsed"}`}
+      className={`admin-portal ${
+        sidebarOpen ? "sidebar-open" : "sidebar-collapsed"
+      }`}
     >
       {/* Sidebar */}
       <div className="sidebar">
@@ -150,17 +152,15 @@ const AdminPortal = () => {
       <div className="main-content">
         <header className="content-header">
           <h1>
-            {navItems.find((item) => item.id === activeTab)?.label || "Dashboard"}
+            {navItems.find((item) => item.id === activeTab)?.label ||
+              "Dashboard"}
           </h1>
           <div className="header-actions">
-            <button className="notification-btn">🔔</button>
             <button className="profile-btn">👤</button>
           </div>
         </header>
 
-        <div className="content-area">
-          {renderContent()}
-        </div>
+        <div className="content-area">{renderContent()}</div>
       </div>
     </div>
   );

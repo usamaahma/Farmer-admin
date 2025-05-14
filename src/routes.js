@@ -8,6 +8,8 @@ import {
 
 // Admin pages
 import AdminLandingPage from "./components/landing";
+import AdminPortal from "./components/landing";
+import Login from "./components/auth/login";
 
 // Not Found Page
 // import NotFound from "./pages/NotFound";
@@ -18,7 +20,7 @@ const AppRoutes = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<AdminLandingPage />} />
-
+        <Route path="/login" element={<Login />} />
         {/* Catch-all route */}
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
