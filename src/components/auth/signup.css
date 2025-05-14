@@ -1,0 +1,173 @@
+/* General Styles */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    padding: 20px;
+}
+
+.signup-card {
+    width: 100%;
+    max-width: 600px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.section-title {
+    font-size: 24px;
+    color: #1890ff;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+/* Form Elements */
+.ant-form-item-label>label {
+    font-weight: 600;
+    color: #333;
+}
+
+.ant-form-item {
+    margin-bottom: 24px;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: #1890ff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(24, 144, 255, 0.2);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Button Styles */
+button {
+    padding: 12px 20px;
+    background-color: #1890ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #40a9ff;
+}
+
+button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+/* Image Upload */
+.image-upload-container {
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #d9d9d9;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.profile-image:hover {
+    transform: scale(1.05);
+}
+
+.image-note {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Crops Input */
+.crops-input-container {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.crops-list {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.crop-tag {
+    background-color: #e6f7ff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid #b3d8ff;
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.remove-icon {
+    margin-left: 8px;
+    color: #ff4d4f;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.remove-icon:hover {
+    color: #ff7875;
+}
+
+/* Farmer Icon */
+.farmer-icon {
+    margin-right: 8px;
+    font-size: 20px;
+    color: #1890ff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .signup-card {
+        padding: 30px 20px;
+    }
+
+    .profile-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    button {
+        width: 100%;
+    }
+}

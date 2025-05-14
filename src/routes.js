@@ -10,6 +10,7 @@ import {
 import AdminLandingPage from "./components/landing";
 import AdminPortal from "./components/landing";
 import Login from "./components/auth/login";
+import FarmerSignup from "./components/auth/signup";
 
 // Not Found Page
 // import NotFound from "./pages/NotFound";
@@ -21,6 +22,7 @@ const AppRoutes = () => {
         {/* Public Routes */}
         <Route path="/" element={<AdminLandingPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<FarmerSignup />} />
         {/* Catch-all route */}
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>

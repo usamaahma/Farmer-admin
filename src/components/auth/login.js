@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./login.css";
 
 const Login = () => {
@@ -65,6 +65,8 @@ const Login = () => {
           required
         />
         <button type="submit">Login</button>
+
+        <p>Dn't Have an account</p><Link to="/signup"><p>signup</p></Link>
       </form>
     </div>
   );
