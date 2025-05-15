@@ -1,30 +1,40 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../../utils/axios"; // ✅ Axios import
 import "./login.css";
 
 const Login = () => {
-  const [userType, setUserType] = useState("admin"); // 'admin' or 'farmer'
+  const [userType, setUserType] = useState("admin"); // admin or farmer
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (userType === "admin") {
-      if (email === "admin@example.com" && password === "admin123") {
-        localStorage.setItem("adminToken", "loggedin");
-        navigate("/admin/dashboard");
-      } else {
-        alert("Invalid admin credentials");
+    try {
+      const res = await auth.post("/login", {
+        email,
+        password,
+      });
+      const user = res.data.user;
+      const role = res.data.user.role;
+      console.log(role, "sjn");
+      if (role !== userType) {
+        alert(`You are not authorized to login as ${userType}`);
+        return;
       }
-    } else if (userType === "farmer") {
-      if (email === "farmer@example.com" && password === "farmer123") {
-        localStorage.setItem("farmerToken", "loggedin");
+
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("role", role);
+      if (role === "admin") {
+        navigate("/dashboard");
+      } else if (role === "farmer") {
         navigate("/farmer/dashboard");
-      } else {
-        alert("Invalid farmer credentials");
       }
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Login failed");
     }
   };
 
@@ -66,7 +76,10 @@ const Login = () => {
         />
         <button type="submit">Login</button>
 
-        <p>Dn't Have an account</p><Link to="/signup"><p>signup</p></Link>
+        <p>Don't have an account?</p>
+        <Link to="/signup">
+          <p>Signup</p>
+        </Link>
       </form>
     </div>
   );

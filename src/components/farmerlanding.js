@@ -1,47 +1,48 @@
 import { useState, useEffect } from "react";
-import "./landing.css";
-import Farmers from "./farmers";
-import Crops from "./crops";
-import Events from "./events";
-import { users, crop, event, orders } from "../utils/axios";
-import Orders from "./orders";
+import "./farmerlanding.css";
 
-const AdminPortal = () => {
-  const [activeTab, setActiveTab] = useState("home");
+import { crop, event, orders } from "../utils/axios";
+import Farmerproducts from "./farmercomponents/farmerproducts";
+import Farmerorders from "./farmercomponents/farmerorders";
+import Farmerevents from "./farmercomponents/farmerevents";
+
+const FarmerDashboard = () => {
+  const [activeTab, setActiveTab] = useState("products");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [dashboardData, setDashboardData] = useState({
-    totalFarmers: 0,
     activeProducts: 0,
     upcomingEvents: 0,
     totalOrders: 0,
   });
 
+  const [products, setProducts] = useState([]);
+  const [ordersList, setOrdersList] = useState([]);
+  const [eventsList, setEventsList] = useState([]);
+
   const navItems = [
-    { id: "home", label: "Dashboard", icon: "🏠" },
-    { id: "farmers", label: "Farmers", icon: "👨‍🌾" },
-    { id: "products", label: "Products", icon: "🌽" },
+    { id: "products", label: "My Products", icon: "🌽" },
     { id: "events", label: "Events", icon: "📅" },
-    { id: "orders", label: "Orders", icon: "📦" },
+    { id: "orders", label: "My Orders", icon: "📦" },
   ];
 
-  // Fetch data for dashboard
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const fetchDashboardData = async () => {
     try {
-      const [farmersRes, productsRes, eventsRes, ordersRes] = await Promise.all(
-        [users.get("/"), crop.get("/"), event.get("/"), orders.get("/")]
-      );
-console.log(ordersRes,"djsn")
-      const totalFarmers =
-        farmersRes.data.results?.filter((farmer) => farmer.role === "farmer")
-          ?.length || 0;
-
-      const totalOrders = ordersRes.data?.length || 0;
-
+      const [productsRes, eventsRes, ordersRes] = await Promise.all([
+        crop.get("/user", { params: { postedBy: user.id } }),
+        event.get("/"), // Get all events, filter locally
+        orders.get(`/farmer/${user.id}`),
+      ]);
+      const filteredEvents =
+        eventsRes.data.results?.filter((evt) => evt.farmerId === user.id) || [];
+      setProducts(productsRes.data.results || []);
+      setOrdersList(ordersRes.data || []);
+      setEventsList(filteredEvents);
       setDashboardData({
-        totalFarmers,
         activeProducts: productsRes.data.results?.length || 0,
-        upcomingEvents: eventsRes.data.results?.length || 0,
-        totalOrders,
+        upcomingEvents: filteredEvents.length,
+        totalOrders: ordersRes.data?.length || 0,
       });
     } catch (error) {
       console.error("Failed to fetch dashboard data:", error);
@@ -49,61 +50,30 @@ console.log(ordersRes,"djsn")
   };
 
   useEffect(() => {
-    fetchDashboardData(); // Call the function when component mounts
+    fetchDashboardData();
   }, []);
 
   const renderContent = () => {
     switch (activeTab) {
-      case "home":
-        return (
-          <div className="tab-content">
-            <h2>Dashboard Overview</h2>
-            <div className="stats-grid">
-              <div className="stat-card">
-                <h3>Total Farmers</h3>
-                <p>{dashboardData.totalFarmers}</p>
-              </div>
-              <div className="stat-card">
-                <h3>Active Products</h3>
-                <p>{dashboardData.activeProducts}</p>
-              </div>
-              <div className="stat-card">
-                <h3>Total Orders</h3>
-                <p>{dashboardData.totalOrders}</p>
-              </div>
-              <div className="stat-card">
-                <h3>Upcoming Events</h3>
-                <p>{dashboardData.upcomingEvents}</p>
-              </div>
-            </div>
-          </div>
-        );
-      case "farmers":
-        return (
-          <div className="tab-content">
-            <h2>Farmers Management</h2>
-            <Farmers />
-          </div>
-        );
       case "products":
         return (
           <div className="tab-content">
-            <h2>Products Management</h2>
-            <Crops />
+            <h2>My Products</h2>
+            <Farmerproducts products={products} />
           </div>
         );
       case "events":
         return (
           <div className="tab-content">
-            <h2>Events Calendar</h2>
-            <Events />
+            <h2>Events</h2>
+            <Farmerevents events={eventsList} />
           </div>
         );
       case "orders":
         return (
           <div className="tab-content">
-            <h2>Order Management</h2>
-            <Orders />
+            <h2>My Orders</h2>
+            <Farmerorders orders={ordersList} />
           </div>
         );
       default:
@@ -113,14 +83,14 @@ console.log(ordersRes,"djsn")
 
   return (
     <div
-      className={`admin-portal ${
+      className={`farmer-dashboard ${
         sidebarOpen ? "sidebar-open" : "sidebar-collapsed"
       }`}
     >
       {/* Sidebar */}
       <div className="sidebar">
         <div className="sidebar-header">
-          <h2>Earn Kisan Admin</h2>
+          <h2>Earn Kisan Farmer</h2>
           <button
             className="toggle-btn"
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -147,8 +117,8 @@ console.log(ordersRes,"djsn")
             <span className="user-avatar">👤</span>
             {sidebarOpen && (
               <>
-                <span className="user-name">Admin User</span>
-                <span className="user-role">Administrator</span>
+                <span className="user-name">{user.name || "Farmer User"}</span>
+                <span className="user-role">Farmer</span>
               </>
             )}
           </div>
@@ -173,4 +143,4 @@ console.log(ordersRes,"djsn")
   );
 };
 
-export default AdminPortal;
+export default FarmerDashboard;
