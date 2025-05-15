@@ -8,25 +8,63 @@ import {
 
 // Admin pages
 import AdminLandingPage from "./components/landing";
-import AdminPortal from "./components/landing";
 import Login from "./components/auth/login";
 import FarmerSignup from "./components/auth/signup";
 import FarmerDashboard from "./components/farmerlanding";
 
-// Not Found Page
-// import NotFound from "./pages/NotFound";
+// Route Guard Components
+const ProtectedRoute = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return user ? children : <Navigate to="/login" replace />;
+};
+
+const PublicRoute = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return user ? <Navigate to="/farmer/dashboard" replace /> : children;
+};
 
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
         {/* Public Routes */}
-        <Route path="/dashboard" element={<AdminLandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<FarmerSignup />} />
-        <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
-        {/* Catch-all route */}
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PublicRoute>
+              <FarmerSignup />
+            </PublicRoute>
+          }
+        />
+
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminLandingPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/farmer/dashboard"
+          element={
+            <ProtectedRoute>
+              <FarmerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Optional: Default route */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );

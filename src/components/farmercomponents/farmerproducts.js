@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./farmerproducts.css";
-import { crop } from "../../utils/axios"; // Make sure this matches your crop API setup
+import { crop } from "../../utils/axios"; // Your Axios instance
 
 function Farmerproducts({ products }) {
   const [showModal, setShowModal] = useState(false);
@@ -41,6 +41,20 @@ function Farmerproducts({ products }) {
     }
   };
 
+  const handleDeleteProduct = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product?"))
+      return;
+
+    try {
+      await crop.delete(`/${id}`);
+      alert("Product deleted successfully!");
+      window.location.reload();
+    } catch (err) {
+      console.error("Error deleting product:", err);
+      alert("Failed to delete product.");
+    }
+  };
+
   return (
     <div className="farmer-products-container">
       <div className="products-header">
@@ -63,6 +77,7 @@ function Farmerproducts({ products }) {
               <th>In Stock</th>
               <th>Reviews</th>
               <th>Created At</th>
+              <th>Action</th> {/* New column */}
             </tr>
           </thead>
           <tbody>
@@ -87,6 +102,14 @@ function Farmerproducts({ products }) {
                   </ul>
                 </td>
                 <td>{new Date(product.createdAt).toLocaleDateString()}</td>
+                <td>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteProduct(product.id)}
+                  >
+                    🗑️ Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

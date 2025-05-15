@@ -68,6 +68,16 @@
   cursor: pointer;
   padding: 5px;
 }
+.logout-btn {
+  padding: 8px 16px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  float: right;
+  margin: 10px;
+}
 
 .sidebar-nav {
   flex: 1;

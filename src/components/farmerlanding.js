@@ -5,6 +5,7 @@ import { crop, event, orders } from "../utils/axios";
 import Farmerproducts from "./farmercomponents/farmerproducts";
 import Farmerorders from "./farmercomponents/farmerorders";
 import Farmerevents from "./farmercomponents/farmerevents";
+import { useNavigate } from "react-router-dom";
 
 const FarmerDashboard = () => {
   const [activeTab, setActiveTab] = useState("products");
@@ -18,6 +19,12 @@ const FarmerDashboard = () => {
   const [products, setProducts] = useState([]);
   const [ordersList, setOrdersList] = useState([]);
   const [eventsList, setEventsList] = useState([]);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear(); // Clear all localStorage (or use localStorage.removeItem("user"))
+    navigate("/login"); // Redirect to login or home page
+  };
 
   const navItems = [
     { id: "products", label: "My Products", icon: "🌽" },
@@ -111,7 +118,9 @@ const FarmerDashboard = () => {
             </div>
           ))}
         </nav>
-
+        <button onClick={handleLogout} className="logout-btn">
+          🚪 Logout
+        </button>
         <div className="sidebar-footer">
           <div className="user-profile">
             <span className="user-avatar">👤</span>

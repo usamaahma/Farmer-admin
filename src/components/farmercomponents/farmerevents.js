@@ -28,10 +28,24 @@ function Farmerevents({ events }) {
       await event.post("/", newEvent);
       alert("Event added successfully!");
       setShowModal(false);
-      window.location.reload(); // or use state to refresh
+      window.location.reload();
     } catch (error) {
       console.error("Error adding event:", error);
       alert("Failed to add event.");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Delete this event?");
+    if (!confirmDelete) return;
+
+    try {
+      await event.delete(`/${id}`);
+      alert("Event deleted!");
+      window.location.reload();
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("Failed to delete.");
     }
   };
 
@@ -53,14 +67,23 @@ function Farmerevents({ events }) {
               <th>Event Name</th>
               <th>Location</th>
               <th>Email</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {events.map((event) => (
-              <tr key={event._id}>
-                <td>{event.eventName}</td>
-                <td>{event.location}</td>
-                <td>{event.email}</td>
+            {events.map((eventItem) => (
+              <tr key={eventItem._id}>
+                <td>{eventItem.eventName}</td>
+                <td>{eventItem.location}</td>
+                <td>{eventItem.email}</td>
+                <td>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(eventItem.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -93,7 +116,6 @@ function Farmerevents({ events }) {
               value={formData.email}
               onChange={handleChange}
             />
-
             <div className="modal-actions">
               <button onClick={handleAddEvent}>Submit</button>
               <button

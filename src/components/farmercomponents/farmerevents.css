@@ -75,3 +75,11 @@
 .cancel-btn {
   background: #ccc;
 }
+.delete-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}

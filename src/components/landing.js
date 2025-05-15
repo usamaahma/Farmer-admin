@@ -5,6 +5,7 @@ import Crops from "./crops";
 import Events from "./events";
 import { users, crop, event, orders } from "../utils/axios";
 import Orders from "./orders";
+import { useNavigate } from "react-router-dom";
 
 const AdminPortal = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -15,7 +16,12 @@ const AdminPortal = () => {
     upcomingEvents: 0,
     totalOrders: 0,
   });
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.clear(); // Clear all localStorage (or use localStorage.removeItem("user"))
+    navigate("/login"); // Redirect to login or home page
+  };
   const navItems = [
     { id: "home", label: "Dashboard", icon: "🏠" },
     { id: "farmers", label: "Farmers", icon: "👨‍🌾" },
@@ -30,7 +36,7 @@ const AdminPortal = () => {
       const [farmersRes, productsRes, eventsRes, ordersRes] = await Promise.all(
         [users.get("/"), crop.get("/"), event.get("/"), orders.get("/")]
       );
-console.log(ordersRes,"djsn")
+      console.log(ordersRes, "djsn");
       const totalFarmers =
         farmersRes.data.results?.filter((farmer) => farmer.role === "farmer")
           ?.length || 0;
@@ -154,7 +160,9 @@ console.log(ordersRes,"djsn")
           </div>
         </div>
       </div>
-
+      <button onClick={handleLogout} className="logout-btn">
+        🚪 Logout
+      </button>
       {/* Main Content */}
       <div className="main-content">
         <header className="content-header">
